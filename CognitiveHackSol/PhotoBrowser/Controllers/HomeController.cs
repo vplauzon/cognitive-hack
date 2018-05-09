@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PhotoBrowser.Controllers
 {
-    [Authorize]
+    [SessionFilter]
     public class HomeController : Controller
     {
-        //[AllowAnonymous]
         public IActionResult Index()
         {
             return View();
