@@ -28,8 +28,8 @@ function refreshStatus(sessionID, status, documentCount) {
     requestStatus(
         sessionID,
         function (statusValue, documentCountValue) {
-            status.value = statusValue;
-            documentCount.value = documentCountValue;
+            status.textContent = statusValue;
+            documentCount.textContent = documentCountValue;
         },
         function () {
             status.value = "Error on API";
