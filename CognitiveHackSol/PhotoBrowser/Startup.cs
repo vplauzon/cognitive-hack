@@ -55,6 +55,7 @@ namespace PhotoBrowser
             //});
 
             //  Non boiler plate
+            app.UseStaticFiles();
             //  Config MVC
             app.UseMvc(routes =>
             {

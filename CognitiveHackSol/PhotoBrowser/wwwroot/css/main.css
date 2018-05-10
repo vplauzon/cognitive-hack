@@ -1,0 +1,13 @@
+﻿body {
+}
+
+header {
+    width: 99%;
+    text-align: left;
+    margin: 5px;
+    padding: 5px;
+    float: right;
+    border: solid;
+    border-width: 3px;
+    background-color: lightgray;
+}
