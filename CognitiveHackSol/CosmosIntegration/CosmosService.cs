@@ -41,7 +41,7 @@ namespace CosmosIntegration
             }
         }
 
-        public async Task<int> GetPhotoCountAsync()
+        public async Task<int> GetImageCountAsync()
         {
             var query = _client.CreateDocumentQuery<int>(
                 _collectionUri,

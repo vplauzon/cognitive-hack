@@ -9,6 +9,6 @@ namespace PhotoBrowser.Api.Payloads
     {
         public string Status { get; set; }
 
-        public int PhotoCount { get; set; }
+        public int ImageCount { get; set; }
     }
 }

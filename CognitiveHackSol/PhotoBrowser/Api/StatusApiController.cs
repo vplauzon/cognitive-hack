@@ -30,14 +30,14 @@ namespace PhotoBrowser.Api
                 SessionFilterAttribute.GetSessionId(HttpContext));
             //  Ask both in parallel
             var statusTask = cosmosService.GetStatusAsync();
-            var photoCountTask = cosmosService.GetPhotoCountAsync();
+            var photoCountTask = cosmosService.GetImageCountAsync();
 
             await Task.WhenAll(statusTask, photoCountTask);
 
             return new StatusOutputPayload
             {
                 Status = statusTask.Result,
-                PhotoCount = photoCountTask.Result
+                ImageCount = photoCountTask.Result
             };
         }
     }

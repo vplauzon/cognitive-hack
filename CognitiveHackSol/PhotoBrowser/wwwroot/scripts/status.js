@@ -1,13 +1,13 @@
 ﻿function statusStartScript() {
     var status = document.getElementById('status');
-    var photoCount = document.getElementById('photoCount');
+    var imageCount = document.getElementById('imageCount');
     var sessionId = readSessionId();
 
-    refreshStatus(sessionId, status, photoCount);
+    refreshStatus(sessionId, status, imageCount);
 }
 
 function readSessionId() {
-    var COOKIE_NAME = "PhotoBrowser.Session";
+    var COOKIE_NAME = "imageBrowser.Session";
     var parts = document.cookie.split(';');
     var memory = {};
 
@@ -24,15 +24,15 @@ function readSessionId() {
     return null;
 }
 
-function refreshStatus(sessionId, status, photoCount) {
+function refreshStatus(sessionId, status, imageCount) {
     requestStatus(
         sessionId,
-        function (statusValue, photoCountValue) {
+        function (statusValue, imageCountValue) {
             status.textContent = statusValue;
-            photoCount.textContent = photoCountValue;
+            imageCount.textContent = imageCountValue;
             setTimeout(
                 function () {
-                    refreshStatus(sessionId, status, photoCount);
+                    refreshStatus(sessionId, status, imageCount);
                 },
                 1000);
         },
@@ -40,7 +40,7 @@ function refreshStatus(sessionId, status, photoCount) {
             status.value = "Error on API";
             setTimeout(
                 function () {
-                    refreshStatus(sessionId, status, photoCount);
+                    refreshStatus(sessionId, status, imageCount);
                 },
                 1000);
         });
@@ -57,7 +57,7 @@ function requestStatus(sessionId, onStatus, onError) {
             if (this.status >= 200 && this.status < 300) {
                 payload = JSON.parse(this.responseText);
 
-                onStatus(payload.status, payload.photoCount);
+                onStatus(payload.status, payload.imageCount);
             }
             else {
                 onError();
