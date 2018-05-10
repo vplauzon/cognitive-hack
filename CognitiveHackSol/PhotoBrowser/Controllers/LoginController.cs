@@ -15,6 +15,8 @@ namespace PhotoBrowser.Controllers
     {
         public IActionResult Index()
         {
+            HttpContext.Response.Cookies.Delete(SessionFilterAttribute.SESSION_COOKIE);
+
             return View();
         }
 
