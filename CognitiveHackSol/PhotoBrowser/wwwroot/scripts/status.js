@@ -30,9 +30,19 @@ function refreshStatus(sessionId, status, photoCount) {
         function (statusValue, photoCountValue) {
             status.textContent = statusValue;
             photoCount.textContent = photoCountValue;
+            setTimeout(
+                function () {
+                    refreshStatus(sessionId, status, photoCount);
+                },
+                1000);
         },
         function () {
             status.value = "Error on API";
+            setTimeout(
+                function () {
+                    refreshStatus(sessionId, status, photoCount);
+                },
+                1000);
         });
 }
 

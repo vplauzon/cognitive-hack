@@ -22,17 +22,22 @@ namespace PhotoBrowser.Api
         }
 
         [HttpPost]
-        public StatusOutputPayload Index([FromBody]StatusInputPayload input)
+        public async Task<StatusOutputPayload> Index([FromBody]StatusInputPayload input)
         {
             var cosmosService = new CosmosService(
                 _apiConfiguration.CosmosDbEndpoint,
                 _apiConfiguration.CosmosDbKey,
                 SessionFilterAttribute.GetSessionId(HttpContext));
+            //  Ask both in parallel
+            var statusTask = cosmosService.GetStatusAsync();
+            var photoCountTask = cosmosService.GetPhotoCountAsync();
+
+            await Task.WhenAll(statusTask, photoCountTask);
 
             return new StatusOutputPayload
             {
-                Status="Hi",
-                PhotoCount = 42
+                Status = statusTask.Result,
+                PhotoCount = photoCountTask.Result
             };
         }
     }
