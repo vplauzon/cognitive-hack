@@ -37,7 +37,7 @@ namespace PhotoBrowser
             //  Configure MVC
             services.AddMvc();
             //  Config file
-            services.Configure<ApiConfiguration>(Configuration.GetSection("apis"));
+            services.Configure<ConnectionConfiguration>(Configuration.GetSection("connections"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

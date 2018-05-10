@@ -9,6 +9,6 @@ namespace PhotoBrowser.Models
     {
         public string Container { get; set; } = "test";
 
-        public string SessionID { get; set; }
+        public string SessionId { get; set; }
     }
 }

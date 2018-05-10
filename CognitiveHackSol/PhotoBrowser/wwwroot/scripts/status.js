@@ -1,9 +1,9 @@
 ﻿function statusStartScript() {
     var status = document.getElementById('status');
-    var documentCount = document.getElementById('documentCount');
-    var sessionID = readSessionId();
+    var photoCount = document.getElementById('photoCount');
+    var sessionId = readSessionId();
 
-    refreshStatus(sessionID, status, documentCount);
+    refreshStatus(sessionId, status, photoCount);
 }
 
 function readSessionId() {
@@ -24,21 +24,21 @@ function readSessionId() {
     return null;
 }
 
-function refreshStatus(sessionID, status, documentCount) {
+function refreshStatus(sessionId, status, photoCount) {
     requestStatus(
-        sessionID,
-        function (statusValue, documentCountValue) {
+        sessionId,
+        function (statusValue, photoCountValue) {
             status.textContent = statusValue;
-            documentCount.textContent = documentCountValue;
+            photoCount.textContent = photoCountValue;
         },
         function () {
             status.value = "Error on API";
         });
 }
 
-function requestStatus(sessionID, onStatus, onError) {
+function requestStatus(sessionId, onStatus, onError) {
     var request = new XMLHttpRequest();
-    var inputPayload = { "session": sessionID };
+    var inputPayload = { "session": sessionId };
 
     request.onreadystatechange = function () {
         if (this.readyState == 4) {
@@ -47,7 +47,7 @@ function requestStatus(sessionID, onStatus, onError) {
             if (this.status >= 200 && this.status < 300) {
                 payload = JSON.parse(this.responseText);
 
-                onStatus(payload.status, payload.documentCount);
+                onStatus(payload.status, payload.photoCount);
             }
             else {
                 onError();

@@ -19,9 +19,9 @@ namespace PhotoBrowser.Controllers
 {
     public class SessionController : Controller
     {
-        private readonly ApiConfiguration _apiConfiguration;
+        private readonly ConnectionConfiguration _apiConfiguration;
 
-        public SessionController(IOptions<ApiConfiguration> apiConfiguration)
+        public SessionController(IOptions<ConnectionConfiguration> apiConfiguration)
         {
             _apiConfiguration = apiConfiguration.Value;
         }
@@ -36,7 +36,7 @@ namespace PhotoBrowser.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(SessionViewModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.SessionID))
+            if (string.IsNullOrWhiteSpace(model.SessionId))
             {
                 var ingestPhotosApiUrl = _apiConfiguration.IngestPhotosApiUrl;
 
@@ -60,15 +60,15 @@ namespace PhotoBrowser.Controllers
                         }
 
                         var payload = await GetResponsePayloadAsync<IDictionary<string, string>>(webResponse);
-                        var sessionID = payload.Values.First();
+                        var sessionId = payload.Values.First();
 
-                        HttpContext.Response.Cookies.Append(SessionFilterAttribute.SESSION_COOKIE, sessionID);
+                        HttpContext.Response.Cookies.Append(SessionFilterAttribute.SESSION_COOKIE, sessionId);
                     }
                 }
             }
             else
             {
-                HttpContext.Response.Cookies.Append(SessionFilterAttribute.SESSION_COOKIE, model.SessionID);
+                HttpContext.Response.Cookies.Append(SessionFilterAttribute.SESSION_COOKIE, model.SessionId);
             }
 
             return RedirectToAction(null, "Home");
