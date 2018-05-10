@@ -11,7 +11,7 @@ using PhotoBrowser.Models;
 
 namespace PhotoBrowser.Controllers
 {
-    public class LoginController : Controller
+    public class SessionController : Controller
     {
         public IActionResult Index()
         {
@@ -21,7 +21,7 @@ namespace PhotoBrowser.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(LoginViewModel model)
+        public IActionResult Index(SessionViewModel model)
         {
             HttpContext.Response.Cookies.Append(SessionFilterAttribute.SESSION_COOKIE, model.SessionID);
 

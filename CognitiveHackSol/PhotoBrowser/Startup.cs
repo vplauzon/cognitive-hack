@@ -22,13 +22,6 @@ namespace PhotoBrowser
             //  Non boiler plate
             //  Configure MVC
             services.AddMvc();
-
-            //  Configure authentication
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/login";
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +39,6 @@ namespace PhotoBrowser
             //});
 
             //  Non boiler plate
-            //  Config auth
-            app.UseAuthentication();
             //  Config MVC
             app.UseMvc(routes =>
             {

@@ -15,7 +15,7 @@ namespace PhotoBrowser
         {
             if (!context.HttpContext.Request.Cookies.ContainsKey(SESSION_COOKIE))
             {
-                context.Result = new RedirectResult("/login", false, false);
+                context.Result = new RedirectResult("/session", false, false);
             }
 
             base.OnActionExecuting(context);

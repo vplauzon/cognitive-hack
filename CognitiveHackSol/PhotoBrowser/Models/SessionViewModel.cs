@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace PhotoBrowser.Models
 {
-    public class LoginViewModel
+    public class SessionViewModel
     {
+        public string Container { get; set; } = "test";
+
         public string SessionID { get; set; }
     }
 }
