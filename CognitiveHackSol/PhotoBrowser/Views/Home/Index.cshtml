@@ -1,10 +1,6 @@
-﻿
-@{
-    ViewData["Title"] = "View";
-}
-
-<html>
+﻿<html>
 <head>
+    <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
@@ -12,6 +8,16 @@
         @Html.ActionLink("New Session", null, "Session")
     </header>
 
-    <h2>View</h2>
+    <h2>Session</h2>
+    <p>Status:  <span id="status" /></p>
+    <p># of documents:  <span id="documentCount" /></p>
+
+    <script src="~/scripts/status.js"></script>
+    <script type="text/javascript">
+        statusStartScript();
+    </script>
+
+    <h2>Photos</h2>
+
 </body>
 </html>
