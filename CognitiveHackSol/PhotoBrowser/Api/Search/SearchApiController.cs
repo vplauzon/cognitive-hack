@@ -30,7 +30,10 @@ namespace PhotoBrowser.Api.Search
             var images = from d in data
                          select new ImagePayload
                          {
-                             ThumbnailUrl = d.ThumbnailUrl
+                             ThumbnailUrl = d.ThumbnailUrl,
+                             Captions = from c in d.Captions
+                                        orderby c.Confidence descending
+                                        select c.Text
                          };
 
             return images.ToArray();

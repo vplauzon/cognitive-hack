@@ -19,8 +19,10 @@ function search_displayResults(result, imageResult, imageResultTemplate) {
         imageResult.appendChild(clone);
 
         var thumbnail = document.getElementById('thumbnail' + i);
+        var tooltip = document.getElementById('tooltip' + i);
 
         thumbnail.src = result[i].thumbnailUrl;
+        tooltip.innerHTML = result[i].captions.join('\n');
         clone.style.display = 'block';
     }
 }

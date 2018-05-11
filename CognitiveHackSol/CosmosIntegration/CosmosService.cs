@@ -26,7 +26,8 @@ namespace CosmosIntegration
             var query = _client.CreateDocumentQuery(
                 _collectionUri,
                 new SqlQuerySpec(
-                    "SELECT c.status FROM c WHERE c.objectType='session' AND c.session=@sessionId",
+                    "SELECT c.status FROM c"
+                    + " WHERE c.objectType='session' AND c.session=@sessionId",
                     CreateParams(_sessionId))
                 );
             var result = await GetAllResultsAsync(query.AsDocumentQuery());
@@ -46,7 +47,8 @@ namespace CosmosIntegration
             var query = _client.CreateDocumentQuery<int>(
                 _collectionUri,
                 new SqlQuerySpec(
-                    "SELECT VALUE COUNT(c) FROM c WHERE c.objectType='image' AND c.session=@sessionId",
+                    "SELECT VALUE COUNT(c) FROM c"
+                    + " WHERE c.objectType='image' AND c.session=@sessionId",
                     CreateParams(_sessionId))
                 );
             var result = await GetAllResultsAsync<int>(query.AsDocumentQuery());
@@ -66,7 +68,9 @@ namespace CosmosIntegration
             var query = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
                 new SqlQuerySpec(
-                    "SELECT TOP @imageCount c.thumbnailUrl, c.captions FROM c WHERE c.objectType='image' AND c.session=@sessionId",
+                    "SELECT TOP @imageCount c.thumbnailUrl, c.captions FROM c"
+                    + " WHERE c.objectType='image' AND c.session=@sessionId"
+                    + " ORDER BY c.captions[0].confidence DESC",
                     CreateParams(_sessionId, new SqlParameter("@imageCount", imageCount)))
                 );
             var result = await GetAllResultsAsync(query.AsDocumentQuery());
