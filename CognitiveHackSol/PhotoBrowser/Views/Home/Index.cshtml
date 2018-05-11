@@ -15,12 +15,15 @@
     </header>
 
     <h2>Session</h2>
-    <p>Status:  <span id="status" /></p>
-    <p># of images:  <span id="imageCount" /></p>
+    <p>Status:  <span id="status"></span></p>
+    <p># of images:  <span id="imageCount"></span></p>
 
-    <section id="photoSection" style="display:none;">
-        <h2>Photos</h2>
-        <textarea id="photos"></textarea>
+    <section id="imageSection" style="display:none;">
+        <h2>Images</h2>
+        <div id="imageResultTemplate" style="display:none;">
+            TN:  <img id="thumbnail" />
+        </div>
+        <div id="imageResult"></div>
     </section>
 
     <script type="text/javascript">
