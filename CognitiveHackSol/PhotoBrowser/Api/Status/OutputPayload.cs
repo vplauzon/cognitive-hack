@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PhotoBrowser.Api.Payloads
+namespace PhotoBrowser.Api.Status
 {
-    public class StatusOutputPayload
+    public class OutputPayload
     {
         public string Status { get; set; }
 

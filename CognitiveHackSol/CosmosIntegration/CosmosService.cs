@@ -61,6 +61,19 @@ namespace CosmosIntegration
             }
         }
 
+        public async Task<SearchImageData[]> SearchNoCriteriaAsync(int imageCount)
+        {
+            var query = _client.CreateDocumentQuery<SearchImageData>(
+                _collectionUri,
+                new SqlQuerySpec(
+                    "SELECT TOP @imageCount c.thumbnailUrl, c.captions FROM c WHERE c.objectType='image' AND c.session=@sessionId",
+                    CreateParams(_sessionId, new SqlParameter("@imageCount", imageCount)))
+                );
+            var result = await GetAllResultsAsync(query.AsDocumentQuery());
+
+            return result;
+        }
+
         private SqlParameterCollection CreateParams(params SqlParameter[] parameters)
         {
             return new SqlParameterCollection(parameters);

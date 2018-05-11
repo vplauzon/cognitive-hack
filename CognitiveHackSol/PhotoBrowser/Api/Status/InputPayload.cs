@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PhotoBrowser.Api.Payloads
+namespace PhotoBrowser.Api.Status
 {
-    public class StatusInputPayload
+    public class InputPayload
     {
         public string Session { get; set; }
     }

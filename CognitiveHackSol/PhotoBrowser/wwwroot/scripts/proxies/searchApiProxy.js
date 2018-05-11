@@ -1,4 +1,4 @@
-﻿function statusApiProxy_requestStatus(sessionId, onStatus, onError) {
+﻿function searchApiProxy_searchNoCriteria(sessionId, onLoad, onError) {
     var request = new XMLHttpRequest();
     var inputPayload = { "session": sessionId };
 
@@ -7,14 +7,14 @@
             if (this.status >= 200 && this.status < 300) {
                 payload = JSON.parse(this.responseText);
 
-                onStatus(payload.status, payload.imageCount);
+                onLoad(payload);
             }
             else {
                 onError();
             }
         }
     };
-    request.open("post", "/api/status", true);
+    request.open("post", "/api/search", true);
     request.setRequestHeader("Content-Type", "application/json");
     request.setRequestHeader("Accept", "application/json");
     request.send(JSON.stringify(inputPayload));

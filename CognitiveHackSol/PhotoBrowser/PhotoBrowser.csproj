@@ -18,8 +18,4 @@
     <ProjectReference Include="..\CosmosIntegration\CosmosIntegration.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\scripts\proxies\" />
-  </ItemGroup>
-
 </Project>

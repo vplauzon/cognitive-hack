@@ -1,7 +1,6 @@
 ﻿using CosmosIntegration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using PhotoBrowser.Api.Payloads;
 using PhotoBrowser.Configuration;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 
-namespace PhotoBrowser.Api
+namespace PhotoBrowser.Api.Status
 {
     [Route("/api/status")]
     public class StatusApiController : Controller
@@ -22,7 +21,7 @@ namespace PhotoBrowser.Api
         }
 
         [HttpPost]
-        public async Task<StatusOutputPayload> Index([FromBody]StatusInputPayload input)
+        public async Task<OutputPayload> Index([FromBody]InputPayload input)
         {
             var cosmosService = new CosmosService(
                 _apiConfiguration.CosmosDbEndpoint,
@@ -34,7 +33,7 @@ namespace PhotoBrowser.Api
 
             await Task.WhenAll(statusTask, photoCountTask);
 
-            return new StatusOutputPayload
+            return new OutputPayload
             {
                 Status = statusTask.Result,
                 ImageCount = photoCountTask.Result

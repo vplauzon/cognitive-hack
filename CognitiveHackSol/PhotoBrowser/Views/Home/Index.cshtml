@@ -3,8 +3,10 @@
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="~/scripts/proxies/statusApiProxy.js"></script>
+    <script src="~/scripts/proxies/searchApiProxy.js"></script>
     <script src="~/scripts/logic/session.js"></script>
     <script src="~/scripts/logic/status.js"></script>
+    <script src="~/scripts/logic/search.js"></script>
     <script src="~/scripts/pages/home.js"></script>
 </head>
 <body>
@@ -18,10 +20,11 @@
 
     <section id="photoSection" style="display:none;">
         <h2>Photos</h2>
-
-        <script type="text/javascript">
-            bootstrapHome();
-        </script>
+        <textarea id="photos"></textarea>
     </section>
+
+    <script type="text/javascript">
+        bootstrapHome();
+    </script>
 </body>
 </html>

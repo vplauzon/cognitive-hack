@@ -3,6 +3,7 @@
     var status = document.getElementById('status');
     var imageCount = document.getElementById('imageCount');
     var photoSection = document.getElementById('photoSection');
+    var photoText = document.getElementById('photos');
 
     status_refreshStatus(
         sessionId,
@@ -10,5 +11,6 @@
         imageCount,
         function () {
             photoSection.style.display = 'block';
+            search_searchNoCriteria(sessionId, photoText);
         });
 }
