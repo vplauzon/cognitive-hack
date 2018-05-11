@@ -13,6 +13,8 @@ namespace PhotoBrowser.Api.Search
     [Route("/api/search")]
     public class SearchApiController : Controller
     {
+        private const int IMAGE_COUNT = 30;
+
         private readonly ConnectionConfiguration _apiConfiguration;
 
         public SearchApiController(IOptions<ConnectionConfiguration> apiConfiguration)
@@ -24,7 +26,7 @@ namespace PhotoBrowser.Api.Search
         {
             var cosmosService = GetCosmosService();
             //  Ask both in parallel
-            var data = await cosmosService.SearchNoCriteriaAsync(20);
+            var data = await cosmosService.SearchNoCriteriaAsync(IMAGE_COUNT);
             var images = from d in data
                          select new ImagePayload
                          {
