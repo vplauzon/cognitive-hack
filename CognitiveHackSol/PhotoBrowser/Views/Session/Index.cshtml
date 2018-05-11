@@ -1,21 +1,29 @@
 ﻿@model PhotoBrowser.Models.SessionViewModel
-@{
-    ViewData["Title"] = "View";
-}
 
-@using (Html.BeginForm())
-{
-<fieldset>
-    <legend>Connect to pictures</legend>
-    <p>
-        <label>Photo Container</label>
-        @Html.TextAreaFor(m => m.Container)
-    </p>
-    <p>
-        <label>Session Id</label>
-        @Html.TextAreaFor(m => m.SessionId)
-    </p>
+<html>
+<head>
+    <title>New Session</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <fieldset>
+            <legend>Connect to images</legend>
+            <p>
+                <label>Image Container</label>
+                @Html.TextAreaFor(m => m.Container)
+            </p>
+            <p>
+                <label>Container SAS Token</label>
+                @Html.TextAreaFor(m => m.SasToken)
+            </p>
+            <p>
+                <label>Session Id</label>
+                @Html.TextAreaFor(m => m.SessionId)
+            </p>
 
-    <input type="submit" value="Connect" />
-</fieldset>
-}
+            <input type="submit" value="Connect" />
+        </fieldset>
+    }
+</body>
+</html>

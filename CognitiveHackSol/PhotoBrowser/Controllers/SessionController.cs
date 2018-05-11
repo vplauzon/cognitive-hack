@@ -46,10 +46,17 @@ namespace PhotoBrowser.Controllers
                 }
 
                 var apiRequest = WebRequest.Create(ingestPhotosApiUrl);
+                var inputPayload = new
+                {
+                    container = model.Container,
+                    sasToken = model.SasToken
+                };
 
+                apiRequest.ContentType = "application/json";
                 apiRequest.Method = "POST";
                 using (var apiRequestStream = await apiRequest.GetRequestStreamAsync())
                 {
+                    await PushRequestPayloadAsync(inputPayload, apiRequestStream);
                     using (var response = await apiRequest.GetResponseAsync())
                     {
                         var webResponse = response as HttpWebResponse;
@@ -72,6 +79,19 @@ namespace PhotoBrowser.Controllers
             }
 
             return RedirectToAction(null, "Home");
+        }
+
+        private async Task PushRequestPayloadAsync<T>(T inputPayload, Stream requestStream)
+        {
+            var serializer = new JsonSerializer();
+            var memoryStream = new MemoryStream();
+            var writer = new StreamWriter(memoryStream);
+
+            serializer.Serialize(new JsonTextWriter(writer), inputPayload);
+            writer.Flush();
+            memoryStream.Position = 0;
+
+            await memoryStream.CopyToAsync(requestStream);
         }
 
         private async Task<T> GetResponsePayloadAsync<T>(HttpWebResponse response)

@@ -13,7 +13,7 @@ namespace PhotoBrowser.Api.Search
     [Route("/api/search")]
     public class SearchApiController : Controller
     {
-        private const int IMAGE_COUNT = 30;
+        private const int IMAGE_COUNT = 50;
 
         private readonly ConnectionConfiguration _apiConfiguration;
 
