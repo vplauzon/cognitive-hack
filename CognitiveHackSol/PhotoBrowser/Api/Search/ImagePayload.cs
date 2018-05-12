@@ -7,5 +7,7 @@ namespace PhotoBrowser.Api.Search
         public string ThumbnailUrl { get; set; }
 
         public IEnumerable<string> Captions { get; set; }
-}
+
+        public IEnumerable<string> Categories { get; set; }
+    }
 }

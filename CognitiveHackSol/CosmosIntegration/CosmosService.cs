@@ -68,7 +68,7 @@ namespace CosmosIntegration
             var query = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
                 new SqlQuerySpec(
-                    "SELECT TOP @imageCount c.thumbnailUrl, c.captions FROM c"
+                    "SELECT TOP @imageCount c.thumbnailUrl, c.captions, c.categories FROM c"
                     + " WHERE c.objectType='image' AND c.session=@sessionId"
                     + " ORDER BY c.captions[0].confidence DESC",
                     CreateParams(_sessionId, new SqlParameter("@imageCount", imageCount)))

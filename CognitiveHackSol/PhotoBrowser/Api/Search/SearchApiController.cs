@@ -33,7 +33,10 @@ namespace PhotoBrowser.Api.Search
                              ThumbnailUrl = d.ThumbnailUrl,
                              Captions = from c in d.Captions
                                         orderby c.Confidence descending
-                                        select c.Text
+                                        select c.Text,
+                             Categories = from c in d.Categories
+                                          orderby c.Score descending
+                                          select c.Name
                          };
 
             return images.ToArray();

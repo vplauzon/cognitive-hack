@@ -5,5 +5,7 @@
         public string ThumbnailUrl { get; set; }
 
         public CaptionData[] Captions { get; set; }
+
+        public CategoryData[] Categories { get; set; }
     }
 }
