@@ -1,6 +1,6 @@
-﻿function searchApiProxy_searchNoCriteria(sessionId, onLoad, onError) {
+﻿function searchApiProxy_searchNoCriteria(onLoad, onError) {
     var request = new XMLHttpRequest();
-    var inputPayload = { "session": sessionId };
+    var inputPayload = {};
 
     request.onreadystatechange = function () {
         if (this.readyState == 4) {

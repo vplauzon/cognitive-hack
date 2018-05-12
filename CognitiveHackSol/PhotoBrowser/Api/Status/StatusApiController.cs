@@ -22,7 +22,7 @@ namespace PhotoBrowser.Api.Status
         }
 
         [HttpPost]
-        public async Task<OutputPayload> Index([FromBody]InputPayload input)
+        public async Task<StatusPayload> Index()
         {
             var cosmosService = new CosmosService(
                 _apiConfiguration.CosmosDbEndpoint,
@@ -34,7 +34,7 @@ namespace PhotoBrowser.Api.Status
 
             await Task.WhenAll(statusTask, photoCountTask);
 
-            return new OutputPayload
+            return new StatusPayload
             {
                 Status = statusTask.Result,
                 ImageCount = photoCountTask.Result

@@ -1,6 +1,6 @@
-﻿function statusApiProxy_requestStatus(sessionId, onStatus, onError) {
+﻿function statusApiProxy_requestStatus(onStatus, onError) {
     var request = new XMLHttpRequest();
-    var inputPayload = { "session": sessionId };
+    var inputPayload = {};
 
     request.onreadystatechange = function () {
         if (this.readyState == 4) {

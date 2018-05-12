@@ -1,6 +1,5 @@
-﻿function search_searchNoCriteria(sessionId, imageResult, imageResultTemplate) {
+﻿function search_searchNoCriteria(imageResult, imageResultTemplate) {
     searchApiProxy_searchNoCriteria(
-        sessionId,
         function (result) {
             search_displayResults(result, imageResult, imageResultTemplate);
         },

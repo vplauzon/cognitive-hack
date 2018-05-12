@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBrowser.Api.Status
 {
-    public class OutputPayload
+    public class StatusPayload
     {
         public string Status { get; set; }
 

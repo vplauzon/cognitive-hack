@@ -1,6 +1,5 @@
-﻿function status_refreshStatus(sessionId, status, imageCount, onReady) {
+﻿function status_refreshStatus(status, imageCount, onReady) {
     statusApiProxy_requestStatus(
-        sessionId,
         function (statusValue, imageCountValue) {
             status.textContent = statusValue;
             imageCount.textContent = imageCountValue;
@@ -10,7 +9,7 @@
             else {
                 setTimeout(
                     function () {
-                        status_refreshStatus(sessionId, status, imageCount, onReady);
+                        status_refreshStatus(status, imageCount, onReady);
                     },
                     1000);
             }
@@ -19,7 +18,7 @@
             status.value = "Error on API";
             setTimeout(
                 function () {
-                    status_refreshStatus(sessionId, status, imageCount, onReady);
+                    status_refreshStatus(status, imageCount, onReady);
                 },
                 1000);
         });

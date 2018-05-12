@@ -23,7 +23,7 @@ namespace PhotoBrowser.Api.Search
             _apiConfiguration = apiConfiguration.Value;
         }
 
-        public async Task<ImagePayload[]> Index([FromQuery]string sessionId)
+        public async Task<ImagePayload[]> Index()
         {
             var cosmosService = GetCosmosService();
             //  Ask both in parallel
