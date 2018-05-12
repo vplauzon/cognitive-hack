@@ -12,24 +12,25 @@ namespace CosmosIntegration
     {
         private readonly DocumentClient _client;
         private readonly Uri _collectionUri;
-        private readonly SqlParameter _sessionId;
+        private readonly FeedOptions _defaultFeedOptions;
 
         public CosmosService(Uri endpoint, string key, string sessionId)
         {
             _client = new DocumentClient(endpoint, key);
             _collectionUri = UriFactory.CreateDocumentCollectionUri("mydb", "images");
-            _sessionId = new SqlParameter("@sessionId", sessionId);
+            _defaultFeedOptions = new FeedOptions
+            {
+                PartitionKey = new PartitionKey(sessionId)
+            };
         }
 
         public async Task<string> GetStatusAsync()
         {
             var query = _client.CreateDocumentQuery(
                 _collectionUri,
-                new SqlQuerySpec(
-                    "SELECT c.status FROM c"
-                    + " WHERE c.objectType='session' AND c.session=@sessionId",
-                    CreateParams(_sessionId))
-                );
+                "SELECT c.status FROM c"
+                + " WHERE c.objectType='session'",
+               _defaultFeedOptions);
             var result = await GetAllResultsAsync(query.AsDocumentQuery());
 
             if (result.Length == 1)
@@ -46,11 +47,9 @@ namespace CosmosIntegration
         {
             var query = _client.CreateDocumentQuery<int>(
                 _collectionUri,
-                new SqlQuerySpec(
-                    "SELECT VALUE COUNT(c) FROM c"
-                    + " WHERE c.objectType='image' AND c.session=@sessionId",
-                    CreateParams(_sessionId))
-                );
+                "SELECT VALUE COUNT(c) FROM c"
+                + " WHERE c.objectType='image'",
+                _defaultFeedOptions);
             var result = await GetAllResultsAsync<int>(query.AsDocumentQuery());
 
             if (result.Length == 1)
@@ -69,10 +68,10 @@ namespace CosmosIntegration
                 _collectionUri,
                 new SqlQuerySpec(
                     "SELECT TOP @imageCount c.thumbnailUrl, c.captions, c.categories FROM c"
-                    + " WHERE c.objectType='image' AND c.session=@sessionId"
+                    + " WHERE c.objectType='image'"
                     + " ORDER BY c.captions[0].confidence DESC",
-                    CreateParams(_sessionId, new SqlParameter("@imageCount", imageCount)))
-                );
+                    CreateParams(new SqlParameter("@imageCount", imageCount))),
+                _defaultFeedOptions);
             var result = await GetAllResultsAsync(query.AsDocumentQuery());
 
             return result;
