@@ -12,6 +12,14 @@ header {
     background-color: lightgray;
 }
 
+.search {
+    margin: 5px;
+    padding: 5px;
+    border: solid;
+    border-width: 1.5px;
+    background-color: oldlace;
+}
+
 /***    Tool tips   ***/
 /* Tooltip container */
 .tooltip-container {

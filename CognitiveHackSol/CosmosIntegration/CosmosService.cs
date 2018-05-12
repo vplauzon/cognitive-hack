@@ -3,6 +3,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
 
@@ -10,17 +11,25 @@ namespace CosmosIntegration
 {
     public class CosmosService
     {
+        private const string DB = "mydb";
+        private const string COLLECTION = "images";
+
         private readonly DocumentClient _client;
         private readonly Uri _collectionUri;
         private readonly FeedOptions _defaultFeedOptions;
+        private readonly RequestOptions _defaultRequestOptions;
 
         public CosmosService(Uri endpoint, string key, string sessionId)
         {
             _client = new DocumentClient(endpoint, key);
-            _collectionUri = UriFactory.CreateDocumentCollectionUri("mydb", "images");
+            _collectionUri = UriFactory.CreateDocumentCollectionUri(DB, COLLECTION);
             _defaultFeedOptions = new FeedOptions
             {
                 PartitionKey = new PartitionKey(sessionId)
+            };
+            _defaultRequestOptions = new RequestOptions
+            {
+                PartitionKey = _defaultFeedOptions.PartitionKey
             };
         }
 
@@ -60,6 +69,21 @@ namespace CosmosIntegration
             {
                 return 0;
             }
+        }
+
+        public async Task<GroupData[]> GetAllCaptionsAsync()
+        {
+            var response = await _client.ExecuteStoredProcedureAsync<IDictionary<string, int>>(
+                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, "getAllCaptions"),
+                _defaultRequestOptions);
+            var result = from p in response.Response
+                         select new GroupData
+                         {
+                             Name = p.Key,
+                             Count = p.Value
+                         };
+
+            return result.ToArray();
         }
 
         public async Task<SearchImageData[]> SearchNoCriteriaAsync(int imageCount)

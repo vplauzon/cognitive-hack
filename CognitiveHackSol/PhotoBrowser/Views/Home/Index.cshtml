@@ -3,9 +3,11 @@
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script src="~/scripts/proxies/statusApiProxy.js"></script>
+    <script src="~/scripts/proxies/groupApiProxy.js"></script>
     <script src="~/scripts/proxies/searchApiProxy.js"></script>
     <script src="~/scripts/logic/status.js"></script>
     <script src="~/scripts/logic/search.js"></script>
+    <script src="~/scripts/logic/searchCriteria.js"></script>
     <script src="~/scripts/pages/home.js"></script>
 </head>
 <body>
@@ -13,12 +15,24 @@
         @Html.ActionLink("New Session", null, "Session")
     </header>
 
-    <h2>Session</h2>
+    <h1>Session</h1>
     <p>Status:  <span id="status"></span></p>
     <p># of images:  <span id="imageCount"></span></p>
 
     <section id="imageSection" style="display:none;">
-        <h2>Images</h2>
+        <h1>Images</h1>
+        <div class="search">
+            <div id="tags">
+                <div id="tagTemplate" style="display:none;">
+                    <p>
+                        <input type="checkbox" id="tagCheckBox" />
+                        <span id="tagText"></span>
+                    </p>
+                </div>
+                <div id="tagList">
+                </div>
+            </div>
+        </div>
         <div id="imageResultTemplate" class="tooltip-container" style="display:none;float:left;margin:4px">
             <img id="thumbnail" />
             <span id="tooltip" class="tooltip-text"></span>

@@ -1,4 +1,4 @@
-﻿function getCaptions() {
+﻿function getAllCaptions() {
     var collection = getContext().getCollection();
 
     // Query documents for all categories
@@ -33,7 +33,7 @@ WHERE c.objectType = "image"
                     }
                 }
 
-                response.setBody(JSON.stringify(countDict));
+                response.setBody(countDict);
             }
         });
 
