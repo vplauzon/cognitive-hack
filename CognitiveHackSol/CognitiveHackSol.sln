@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoBrowser", "PhotoBrowser\PhotoBrowser.csproj", "{C2349487-8636-4C2F-908A-8542DCCCE09A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmosIntegration", "CosmosIntegration\CosmosIntegration.csproj", "{C6F97D42-2676-4E7A-AF5D-B5D23418C30F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CosmosIntegration", "CosmosIntegration\CosmosIntegration.csproj", "{C6F97D42-2676-4E7A-AF5D-B5D23418C30F}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Deployment", "Deployment\Deployment.deployproj", "{44050A38-9DA7-4179-9204-E0138235FD8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C6F97D42-2676-4E7A-AF5D-B5D23418C30F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6F97D42-2676-4E7A-AF5D-B5D23418C30F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6F97D42-2676-4E7A-AF5D-B5D23418C30F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44050A38-9DA7-4179-9204-E0138235FD8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44050A38-9DA7-4179-9204-E0138235FD8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44050A38-9DA7-4179-9204-E0138235FD8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44050A38-9DA7-4179-9204-E0138235FD8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
