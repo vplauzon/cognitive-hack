@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBrowser.Api.Status
 {
+    [SessionFilter]
     [Route("/api/status")]
     public class StatusApiController : Controller
     {

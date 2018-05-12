@@ -7,5 +7,7 @@
         public CaptionData[] Captions { get; set; }
 
         public CategoryData[] Categories { get; set; }
+
+        public TagData[] Tags { get; set; }
     }
 }

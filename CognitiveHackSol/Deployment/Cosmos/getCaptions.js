@@ -1,25 +1,39 @@
-﻿function getCaptions(sessionId) {
+﻿function getCaptions() {
     var collection = getContext().getCollection();
 
-    // Query documents and take 1st item.
+    // Query documents for all categories
     var isAccepted = collection.queryDocuments(
         collection.getSelfLink(),
-        'SELECT * FROM root r',
+        `
+SELECT cat.name
+FROM c
+JOIN cat in c.categories
+WHERE c.objectType = "image"
+        `,
         function (err, feed, options) {
             if (err) {
                 throw err;
             }
+            var response = getContext().getResponse();
 
-            // Check the feed and if empty, set the body to 'no docs found', 
-            // else take 1st element from feed
-            if (!feed || !feed.length) {
-                var response = getContext().getResponse();
-                response.setBody('no docs found');
+            if (!feed) {
+                response.setBody('No feed provided');
             }
             else {
-                var response = getContext().getResponse();
-                var body = { prefix: "Johnny", feed: feed[0] };
-                response.setBody(JSON.stringify(body));
+                var countDict = {};
+
+                for (var i = 0; i != feed.length; ++i) {
+                    var name = feed[i].name;
+
+                    if (countDict[name]) {
+                        ++(countDict[name]);
+                    }
+                    else {
+                        countDict[name] = 1;
+                    }
+                }
+
+                response.setBody(JSON.stringify(countDict));
             }
         });
 

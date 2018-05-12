@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBrowser.Api.Search
 {
+    [SessionFilter]
     [Route("/api/search")]
     public class SearchApiController : Controller
     {
@@ -36,7 +37,10 @@ namespace PhotoBrowser.Api.Search
                                         select c.Text,
                              Categories = from c in d.Categories
                                           orderby c.Score descending
-                                          select c.Name
+                                          select c.Name,
+                             Tags = from t in d.Tags
+                                          orderby t.Confidence descending
+                                          select t.Name
                          };
 
             return images.ToArray();

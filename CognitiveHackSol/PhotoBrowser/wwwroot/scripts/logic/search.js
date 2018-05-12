@@ -21,9 +21,11 @@ function search_displayResults(result, imageResult, imageResultTemplate) {
         var thumbnail = document.getElementById('thumbnail' + i);
         var tooltip = document.getElementById('tooltip' + i);
         var text = result[i].captions.join('\n')
-            + '\n'
-            + '{'
+            + '('
             + result[i].categories.join(', ')
+            + ')'
+            + '{'
+            + result[i].tags.join(', ')
             + '}';
 
         thumbnail.src = result[i].thumbnailUrl;

@@ -9,5 +9,7 @@ namespace PhotoBrowser.Api.Search
         public IEnumerable<string> Captions { get; set; }
 
         public IEnumerable<string> Categories { get; set; }
+
+        public IEnumerable<string> Tags { get; set; }
     }
 }
