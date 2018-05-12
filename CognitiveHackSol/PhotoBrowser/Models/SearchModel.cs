@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace PhotoBrowser.Models
 {
-    public class GroupModel
+    public class SearchModel
     {
-        public int Count { get; set; }
-
-        public string Text { get; set; }
+        public GroupModel[] Categories { get; set; }
     }
 }

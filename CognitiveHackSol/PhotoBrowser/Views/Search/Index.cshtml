@@ -1,4 +1,5 @@
-﻿<html>
+﻿@model PhotoBrowser.Models.SearchModel
+<html>
 <head>
     <title>Search</title>
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -15,16 +16,10 @@
     </header>
 
     <h1>Search Images</h1>
-    <section id="searchCriteriaSection" >
+    <section id="searchCriteriaSection">
         <div class="searchCriteria">
             <div id="tags">
                 <h2>Tags</h2>
-                <div id="tagTemplate" style="display:none;">
-                    <p style="margin:0px;padding:0px">
-                        <input type="checkbox" id="tagCheckBox" />
-                        <span id="tagText"></span>
-                    </p>
-                </div>
                 <div id="tagList">
                 </div>
             </div>
@@ -33,6 +28,21 @@
             </div>
             <div id="categories">
                 <h2>Categories</h2>
+                <div id="categoryList">
+                    @for (int i = 0; i != Model.Categories.Length; ++i)
+                    {
+                        var model = Model.Categories[i];
+                        var tagId = "tag" + i;
+                        var tagCheckBoxId = "tagCheckBox" + i;
+
+                        <div id="@tagId">
+                            <p class="searchItem">
+                                <input type="checkbox" id="tagCheckBox" />
+                                @string.Concat(model.Text, " (", model.Count, ")")
+                            </p>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </section>

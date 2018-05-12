@@ -24,6 +24,11 @@
     font-size: large;
 }
 
+.searchItem {
+    margin: 0px;
+    padding: 0px;
+}
+
 /***    Tool tips   ***/
 /* Tooltip container */
 .tooltip-container {

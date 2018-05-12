@@ -1,4 +1,4 @@
-﻿function getAllCaptions() {
+﻿function getAllCategories() {
     var collection = getContext().getCollection();
 
     // Query documents for all categories

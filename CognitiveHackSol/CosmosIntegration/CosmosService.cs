@@ -71,15 +71,15 @@ namespace CosmosIntegration
             }
         }
 
-        public async Task<GroupData[]> GetAllCaptionsAsync()
+        public async Task<GroupData[]> GetAllCategoriesAsync()
         {
             var response = await _client.ExecuteStoredProcedureAsync<IDictionary<string, int>>(
-                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, "getAllCaptions"),
+                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, "getAllCategories"),
                 _defaultRequestOptions);
             var result = from p in response.Response
                          select new GroupData
                          {
-                             Name = p.Key,
+                             Text = p.Key,
                              Count = p.Value
                          };
 

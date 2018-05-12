@@ -25,7 +25,7 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
-    <None Include="Cosmos\GetAllCaptions.js" />
+    <None Include="Cosmos\GetAllCategories.js" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
