@@ -26,9 +26,13 @@ namespace PhotoBrowser.Controllers
         {
             var cosmosService = GetCosmosService();
             var categories = await cosmosService.GetAllCategoriesAsync();
+            var tags = await cosmosService.GetAllTagsAsync();
+            var captions = await cosmosService.GetAllCaptionsAsync();
             var model = new SearchModel
             {
-                Categories = DataToModel(categories)
+                Categories = DataToModel(categories),
+                Tags = DataToModel(tags),
+                Captions = DataToModel(captions)
             };
 
             return View(model);

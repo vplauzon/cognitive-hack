@@ -18,29 +18,51 @@
     <h1>Search Images</h1>
     <section id="searchCriteriaSection">
         <div class="searchCriteria">
-            <div id="tags">
+            <div id="tags" class="searchGroup">
                 <h2>Tags</h2>
                 <div id="tagList">
+                    @for (int i = 0; i != Model.Tags.Length; ++i)
+                    {
+                        var model = Model.Tags[i];
+                        var tagId = "tag" + i;
+                        var tagCheckBoxId = "tagCheckBox" + i;
+
+                        <p id="@tagId" class="searchItem">
+                            <input type="checkbox" id="@tagCheckBoxId" />
+                            @string.Concat(model.Text, " (", model.Count, ")")
+                        </p>
+                    }
                 </div>
             </div>
-            <div id="captions">
-                <h2>Captions</h2>
-            </div>
-            <div id="categories">
+            <div id="categories" class="searchGroup">
                 <h2>Categories</h2>
                 <div id="categoryList">
                     @for (int i = 0; i != Model.Categories.Length; ++i)
                     {
                         var model = Model.Categories[i];
-                        var tagId = "tag" + i;
-                        var tagCheckBoxId = "tagCheckBox" + i;
+                        var categoryId = "category" + i;
+                        var categoryCheckBoxId = "categoryCheckBox" + i;
 
-                        <div id="@tagId">
-                            <p class="searchItem">
-                                <input type="checkbox" id="tagCheckBox" />
-                                @string.Concat(model.Text, " (", model.Count, ")")
-                            </p>
-                        </div>
+                        <p id="@categoryId" class="searchItem">
+                            <input type="checkbox" id="@categoryCheckBoxId" />
+                            @string.Concat(model.Text, " (", model.Count, ")")
+                        </p>
+                    }
+                </div>
+            </div>
+            <div id="captions" class="searchGroup">
+                <h2>Captions</h2>
+                <div id="categoryList">
+                    @for (int i = 0; i != Model.Captions.Length; ++i)
+                    {
+                        var model = Model.Captions[i];
+                        var captionId = "caption" + i;
+                        var captionCheckBoxId = "captionCheckBox" + i;
+
+                        <p id="@captionId" class="searchItem">
+                            <input type="checkbox" id="@captionCheckBoxId" />
+                            @string.Concat(model.Text, " (", model.Count, ")")
+                        </p>
                     }
                 </div>
             </div>
@@ -51,7 +73,7 @@
             <img id="thumbnail" />
             <span id="tooltip" class="tooltip-text"></span>
         </div>
-        <div id="imageResult"></div>
+        <div id="imageResult" class="imageResult"></div>
     </section>
 
     <script type="text/javascript">

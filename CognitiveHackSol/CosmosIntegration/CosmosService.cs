@@ -71,10 +71,26 @@ namespace CosmosIntegration
             }
         }
 
-        public async Task<GroupData[]> GetAllCategoriesAsync()
+        #region Groups
+        public Task<GroupData[]> GetAllCategoriesAsync()
+        {
+            return GetGroupAsync("getAllCategories");
+        }
+
+        public Task<GroupData[]> GetAllTagsAsync()
+        {
+            return GetGroupAsync("getAllTags");
+        }
+
+        public Task<GroupData[]> GetAllCaptionsAsync()
+        {
+            return GetGroupAsync("getAllCaptions");
+        }
+
+        private async Task<GroupData[]> GetGroupAsync(string sprocName)
         {
             var response = await _client.ExecuteStoredProcedureAsync<IDictionary<string, int>>(
-                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, "getAllCategories"),
+                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, sprocName),
                 _defaultRequestOptions);
             var result = from p in response.Response
                          select new GroupData
@@ -85,7 +101,9 @@ namespace CosmosIntegration
 
             return result.ToArray();
         }
+        #endregion
 
+        #region Search
         public async Task<SearchImageData[]> SearchNoCriteriaAsync(int imageCount)
         {
             var query = _client.CreateDocumentQuery<SearchImageData>(
@@ -101,6 +119,7 @@ namespace CosmosIntegration
 
             return result;
         }
+        #endregion
 
         private SqlParameterCollection CreateParams(params SqlParameter[] parameters)
         {
