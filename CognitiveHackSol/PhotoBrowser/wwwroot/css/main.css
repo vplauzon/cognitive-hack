@@ -1,7 +1,7 @@
 ﻿body {
 }
 
-header {
+.menu {
     width: 99%;
     text-align: left;
     margin: 5px;
@@ -12,12 +12,16 @@ header {
     background-color: lightgray;
 }
 
-.search {
+.searchCriteria {
     margin: 5px;
     padding: 5px;
     border: solid;
     border-width: 1.5px;
     background-color: oldlace;
+}
+
+.search h2{
+    font-size: large;
 }
 
 /***    Tool tips   ***/

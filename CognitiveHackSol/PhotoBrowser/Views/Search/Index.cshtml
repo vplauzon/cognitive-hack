@@ -1,0 +1,51 @@
+﻿<html>
+<head>
+    <title>Search</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="~/scripts/proxies/searchApiProxy.js"></script>
+    <script src="~/scripts/logic/search.js"></script>
+    <script src="~/scripts/logic/searchCriteria.js"></script>
+    <script src="~/scripts/pages/search.js"></script>
+</head>
+<body>
+    <header>
+        <div class="menu">
+            @Html.ActionLink("New Session", null, "Session")
+        </div>
+    </header>
+
+    <h1>Search Images</h1>
+    <section id="searchCriteriaSection" >
+        <div class="searchCriteria">
+            <div id="tags">
+                <h2>Tags</h2>
+                <div id="tagTemplate" style="display:none;">
+                    <p style="margin:0px;padding:0px">
+                        <input type="checkbox" id="tagCheckBox" />
+                        <span id="tagText"></span>
+                    </p>
+                </div>
+                <div id="tagList">
+                </div>
+            </div>
+            <div id="captions">
+                <h2>Captions</h2>
+            </div>
+            <div id="categories">
+                <h2>Categories</h2>
+            </div>
+        </div>
+    </section>
+    <section id="imageSection">
+        <div id="imageResultTemplate" class="tooltip-container" style="display:none;float:left;margin:4px">
+            <img id="thumbnail" />
+            <span id="tooltip" class="tooltip-text"></span>
+        </div>
+        <div id="imageResult"></div>
+    </section>
+
+    <script type="text/javascript">
+        bootstrapSearch();
+    </script>
+</body>
+</html>
