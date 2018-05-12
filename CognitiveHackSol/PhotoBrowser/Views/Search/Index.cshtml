@@ -28,8 +28,10 @@
                         var tagCheckBoxId = "tagCheckBox" + i;
 
                         <p id="@tagId" class="searchItem">
-                            <input type="checkbox" id="@tagCheckBoxId" />
-                            @string.Concat(model.Text, " (", model.Count, ")")
+                            <label>
+                                <input type="checkbox" id="@tagCheckBoxId" />
+                                @string.Concat(model.Text, " (", model.Count, ")")
+                            </label>
                         </p>
                     }
                 </div>
@@ -44,8 +46,10 @@
                         var categoryCheckBoxId = "categoryCheckBox" + i;
 
                         <p id="@categoryId" class="searchItem">
-                            <input type="checkbox" id="@categoryCheckBoxId" />
-                            @string.Concat(model.Text, " (", model.Count, ")")
+                            <label>
+                                <input type="checkbox" id="@categoryCheckBoxId" />
+                                @string.Concat(model.Text, " (", model.Count, ")")
+                            </label>
                         </p>
                     }
                 </div>
@@ -60,8 +64,10 @@
                         var captionCheckBoxId = "captionCheckBox" + i;
 
                         <p id="@captionId" class="searchItem">
-                            <input type="checkbox" id="@captionCheckBoxId" />
-                            @string.Concat(model.Text, " (", model.Count, ")")
+                            <label>
+                                <input type="checkbox" id="@captionCheckBoxId" />
+                                @string.Concat(model.Text, " (", model.Count, ")")
+                            </label>
                         </p>
                     }
                 </div>
