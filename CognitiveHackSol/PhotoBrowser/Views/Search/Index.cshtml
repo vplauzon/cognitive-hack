@@ -19,7 +19,7 @@
     <section id="searchCriteriaSection">
         <div class="searchCriteria">
             <div id="tags" class="searchGroup">
-                <h2>Tags</h2>
+                <h2>Tags (@Model.TotalTags)</h2>
                 <div id="tagList">
                     @for (int i = 0; i != Model.Tags.Length; ++i)
                     {
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div id="categories" class="searchGroup">
-                <h2>Categories</h2>
+                <h2>Categories (@Model.TotalCategories)</h2>
                 <div id="categoryList">
                     @for (int i = 0; i != Model.Categories.Length; ++i)
                     {
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div id="captions" class="searchGroup">
-                <h2>Captions</h2>
+                <h2>Captions (@Model.TotalCaptions)</h2>
                 <div id="categoryList">
                     @for (int i = 0; i != Model.Captions.Length; ++i)
                     {

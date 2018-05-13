@@ -30,8 +30,11 @@ namespace PhotoBrowser.Controllers
             var captions = await cosmosService.GetAllCaptionsAsync();
             var model = new SearchModel
             {
+                TotalCategories = categories.Sum(g => g.Count),
                 Categories = DataToModel(categories),
+                TotalTags = tags.Sum(g => g.Count),
                 Tags = DataToModel(tags),
+                TotalCaptions = captions.Sum(g => g.Count),
                 Captions = DataToModel(captions)
             };
 
