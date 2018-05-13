@@ -25,11 +25,21 @@ namespace PhotoBrowser.Controllers
         public async Task<IActionResult> Index()
         {
             var cosmosService = GetCosmosService();
-            var categories = await cosmosService.GetAllCategoriesAsync();
-            var tags = await cosmosService.GetAllTagsAsync();
-            var captions = await cosmosService.GetAllCaptionsAsync();
+            var totalImagesTask = cosmosService.GetImageCountAsync();
+            var categoriesTask = cosmosService.GetAllCategoriesAsync();
+            var tagsTask = cosmosService.GetAllTagsAsync();
+            var captionsTask = cosmosService.GetAllCaptionsAsync();
+
+            //  Join
+            await Task.WhenAll(totalImagesTask, categoriesTask, tagsTask, captionsTask);
+
+            var totalImages = totalImagesTask.Result;
+            var categories = categoriesTask.Result;
+            var tags = tagsTask.Result;
+            var captions = captionsTask.Result;
             var model = new SearchModel
             {
+                TotalImages = totalImages,
                 TotalCategories = categories.Sum(g => g.Count),
                 Categories = DataToModel(categories),
                 TotalTags = tags.Sum(g => g.Count),

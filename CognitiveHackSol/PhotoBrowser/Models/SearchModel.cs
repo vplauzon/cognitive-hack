@@ -7,6 +7,8 @@ namespace PhotoBrowser.Models
 {
     public class SearchModel
     {
+        public int TotalImages { get; set; }
+
         public int TotalCategories { get; set; }
 
         public GroupModel[] Categories { get; set; }
