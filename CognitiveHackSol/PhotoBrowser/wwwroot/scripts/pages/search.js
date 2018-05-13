@@ -6,5 +6,4 @@
     var tagTemplate = document.getElementById('tagTemplate');
 
     search_searchNoCriteria(imageResult, imageResultTemplate);
-    //searchCriteria_bootstrap(tagList, tagTemplate);
 }
