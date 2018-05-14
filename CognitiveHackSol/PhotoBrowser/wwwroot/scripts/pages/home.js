@@ -1,7 +1,6 @@
 ﻿function bootstrapHome() {
     var status = document.getElementById('status');
     var imageCount = document.getElementById('imageCount');
-    var imageSection = document.getElementById('imageSection');
 
     status_refreshStatus(
         status,
