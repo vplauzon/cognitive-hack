@@ -1,4 +1,4 @@
-﻿function search_bindCriteria(tagCount, imageResult, imageResultTemplate, searchCount) {
+﻿function search_bindCriteria(tags, imageResult, imageResultTemplate, searchCount) {
     var criteria = { tags: [] };
     var searchState = {
         isRefreshing: false,
@@ -11,11 +11,8 @@
         }
     };
 
-    for (var i = 0; i != tagCount; ++i) {
-        var inputBox = document.getElementById("tagCheckBox" + i);
+    tags.forEach(inputBox => search_injectOnClick(searchState, inputBox));
 
-        search_injectOnClick(searchState, inputBox);
-    }
     //  Perform the initial search
     search_onChangeCriteria(searchState);
 }
@@ -66,7 +63,7 @@ function search_onChangeCriteria(searchState) {
 
 function search_displayResults(result, controls) {
     var images = result.images;
-    
+
     //  Clear results
     controls.imageResult.innerHTML = "";
     controls.searchCount.textContent = result.totalAvailable;
