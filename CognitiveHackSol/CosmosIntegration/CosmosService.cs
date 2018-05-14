@@ -104,7 +104,7 @@ namespace CosmosIntegration
         #endregion
 
         #region Search
-        public async Task<SearchImageData[]> SearchNoCriteriaAsync(int imageCount)
+        public async Task<SearchResultData> Search(int maxImageCount, string[] tags)
         {
             var query = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
@@ -113,9 +113,14 @@ namespace CosmosIntegration
                     + " FROM c"
                     + " WHERE c.objectType='image'"
                     + " ORDER BY c.captions[0].confidence DESC",
-                    CreateParams(new SqlParameter("@imageCount", imageCount))),
+                    CreateParams(new SqlParameter("@imageCount", maxImageCount))),
                 _defaultFeedOptions);
-            var result = await GetAllResultsAsync(query.AsDocumentQuery());
+            var images = await GetAllResultsAsync(query.AsDocumentQuery());
+            var result = new SearchResultData
+            {
+                Images = images,
+                TotalAvailable = 42
+            };
 
             return result;
         }

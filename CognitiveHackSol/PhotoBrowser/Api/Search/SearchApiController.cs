@@ -14,7 +14,7 @@ namespace PhotoBrowser.Api.Search
     [Route("/api/search")]
     public class SearchApiController : Controller
     {
-        private const int IMAGE_COUNT = 50;
+        private const int MAX_IMAGE_COUNT = 50;
 
         private readonly ConnectionConfiguration _apiConfiguration;
 
@@ -23,12 +23,12 @@ namespace PhotoBrowser.Api.Search
             _apiConfiguration = apiConfiguration.Value;
         }
 
-        public async Task<SearchOutputPayload> Index()
+        public async Task<SearchOutputPayload> Index([FromBody]SearchCriteriaPayload criteria)
         {
             var cosmosService = GetCosmosService();
             //  Ask both in parallel
-            var data = await cosmosService.SearchNoCriteriaAsync(IMAGE_COUNT);
-            var images = from d in data
+            var data = await cosmosService.Search(MAX_IMAGE_COUNT, criteria.Tags);
+            var images = from d in data.Images
                          select new ImagePayload
                          {
                              ThumbnailUrl = d.ThumbnailUrl,
@@ -44,7 +44,8 @@ namespace PhotoBrowser.Api.Search
                          };
             var output = new SearchOutputPayload
             {
-                Images = images
+                Images = images,
+                TotalAvailable = data.TotalAvailable
             };
 
             return output;
