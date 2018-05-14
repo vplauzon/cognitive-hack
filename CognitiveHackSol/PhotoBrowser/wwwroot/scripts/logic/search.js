@@ -1,4 +1,4 @@
-﻿function search_bindCriteria(tagCount, imageResult, imageResultTemplate) {
+﻿function search_bindCriteria(tagCount, imageResult, imageResultTemplate, searchCount) {
     var criteria = { tags: [] };
     var searchState = {
         isRefreshing: false,
@@ -6,7 +6,8 @@
         criteria: criteria,
         controls: {
             imageResult: imageResult,
-            imageResultTemplate:  imageResultTemplate
+            imageResultTemplate: imageResultTemplate,
+            searchCount: searchCount
         }
     };
 
@@ -64,10 +65,13 @@ function search_onChangeCriteria(searchState) {
 }
 
 function search_displayResults(result, controls) {
+    var images = result.images;
+    
     //  Clear results
     controls.imageResult.innerHTML = "";
+    controls.searchCount.textContent = result.totalAvailable;
 
-    for (var i = 0; i < result.length; ++i) {
+    for (var i = 0; i < images.length; ++i) {
         var clone = controls.imageResultTemplate.cloneNode(true);
 
         search_appendIds(clone, i);
@@ -75,15 +79,15 @@ function search_displayResults(result, controls) {
 
         var thumbnail = document.getElementById('thumbnail' + i);
         var tooltip = document.getElementById('tooltip' + i);
-        var text = result[i].captions.join('\n')
+        var text = images[i].captions.join('\n')
             + '('
-            + result[i].categories.join(', ')
+            + images[i].categories.join(', ')
             + ')'
             + '{'
-            + result[i].tags.join(', ')
+            + images[i].tags.join(', ')
             + '}';
 
-        thumbnail.src = result[i].thumbnailUrl;
+        thumbnail.src = images[i].thumbnailUrl;
         tooltip.innerHTML = text;
         clone.style.display = 'block';
     }

@@ -23,7 +23,7 @@ namespace PhotoBrowser.Api.Search
             _apiConfiguration = apiConfiguration.Value;
         }
 
-        public async Task<ImagePayload[]> Index()
+        public async Task<SearchOutputPayload> Index()
         {
             var cosmosService = GetCosmosService();
             //  Ask both in parallel
@@ -39,11 +39,15 @@ namespace PhotoBrowser.Api.Search
                                           orderby c.Score descending
                                           select c.Name,
                              Tags = from t in d.Tags
-                                          orderby t.Confidence descending
-                                          select t.Name
+                                    orderby t.Confidence descending
+                                    select t.Name
                          };
+            var output = new SearchOutputPayload
+            {
+                Images = images
+            };
 
-            return images.ToArray();
+            return output;
         }
 
         private CosmosService GetCosmosService()
