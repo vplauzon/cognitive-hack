@@ -26,10 +26,11 @@
                         var model = Model.Tags[i];
                         var tagId = "tag" + i;
                         var tagCheckBoxId = "tagCheckBox" + i;
+                        var tagValue = model.Text;
 
                         <p id="@tagId" class="searchItem">
                             <label>
-                                <input type="checkbox" id="@tagCheckBoxId" />
+                                <input type="checkbox" id="@tagCheckBoxId" value="@tagValue" />
                                 @string.Concat(model.Text, " (", model.Count, ")")
                             </label>
                         </p>
@@ -83,7 +84,7 @@
     </section>
 
     <script type="text/javascript">
-        bootstrapSearch();
+        bootstrapSearch(@Model.Tags.Length);
     </script>
 </body>
 </html>
