@@ -106,14 +106,24 @@ namespace CosmosIntegration
         #region Search
         public async Task<SearchResultData> Search(int maxImageCount, string[] tags)
         {
+            var tagFilter = string.Join(
+                " OR ",
+                from i in Enumerable.Range(1, tags.Length)
+                select "tag.name=@tag" + i);
+            var tagParams = from i in Enumerable.Range(1, tags.Length)
+                            select new SqlParameter("@tag" + i, tags[i - 1]);
+            var parameters = CreateParams(
+                tagParams.Append(new SqlParameter("@imageCount", maxImageCount)));
             var query = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
                 new SqlQuerySpec(
-                    "SELECT TOP @imageCount c.thumbnailUrl, c.captions, c.categories, c.tags"
+                    "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
                     + " FROM c"
+                    + (tags.Any() ? " JOIN tag IN c.tags" : string.Empty)
                     + " WHERE c.objectType='image'"
+                    + (tags.Any() ? " AND (" + tagFilter + ")" : string.Empty)
                     + " ORDER BY c.captions[0].confidence DESC",
-                    CreateParams(new SqlParameter("@imageCount", maxImageCount))),
+                    parameters),
                 _defaultFeedOptions);
             var images = await GetAllResultsAsync(query.AsDocumentQuery());
             var result = new SearchResultData
@@ -127,6 +137,11 @@ namespace CosmosIntegration
         #endregion
 
         private SqlParameterCollection CreateParams(params SqlParameter[] parameters)
+        {
+            return CreateParams((IEnumerable<SqlParameter>)parameters);
+        }
+
+        private SqlParameterCollection CreateParams(IEnumerable<SqlParameter> parameters)
         {
             return new SqlParameterCollection(parameters);
         }
