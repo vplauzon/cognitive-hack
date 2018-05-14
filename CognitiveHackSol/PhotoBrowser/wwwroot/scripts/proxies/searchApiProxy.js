@@ -1,6 +1,6 @@
-﻿function searchApiProxy_searchNoCriteria(onLoad, onError) {
+﻿function searchApiProxy_search(criteria, onLoad, onError) {
     var request = new XMLHttpRequest();
-    var inputPayload = {};
+    var inputPayload = criteria;
 
     request.onreadystatechange = function () {
         if (this.readyState == 4) {
