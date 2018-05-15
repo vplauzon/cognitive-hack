@@ -1,43 +1,50 @@
 ﻿function getAllCaptions() {
+    var response = getContext().getResponse();
     var collection = getContext().getCollection();
-
-    // Query documents for all categories
-    var isAccepted = collection.queryDocuments(
-        collection.getSelfLink(),
-        `
-SELECT caption.text
+    var query = `
+SELECT caption.text AS name
 FROM c
 JOIN caption in c.captions
 WHERE c.objectType = "image"
-        `,
-        function (err, feed, options) {
-            if (err) {
-                throw err;
-            }
-            var response = getContext().getResponse();
+`;
+    var countDict = {};
 
-            if (!feed) {
-                response.setBody('No feed provided');
-            }
-            else {
-                var countDict = {};
+    tryQuery();
 
-                for (var i = 0; i != feed.length; ++i) {
-                    var name = feed[i].text;
+    function tryQuery(continuation) {
+        var requestOptions = { continuation: continuation };
+        // Query documents for all captions
+        var isAccepted = collection.queryDocuments(
+            collection.getSelfLink(),
+            query,
+            requestOptions,
+            function (err, feed, responseOptions) {
+                if (err) {
+                    throw err;
+                }
 
-                    if (countDict[name]) {
-                        ++(countDict[name]);
-                    }
-                    else {
-                        countDict[name] = 1;
+                if (feed) {
+                    for (var i = 0; i != feed.length; ++i) {
+                        var name = feed[i].name;
+
+                        if (countDict[name]) {
+                            ++(countDict[name]);
+                        }
+                        else {
+                            countDict[name] = 1;
+                        }
                     }
                 }
 
-                response.setBody(countDict);
-            }
-        });
+                if (responseOptions.continuation) {
+                    tryQuery(responseOptions.continuation)
+                } else {
+                    response.setBody(countDict);
+                }
+            });
 
-    if (!isAccepted) {
-        throw new Error('The query was not accepted by the server.');
+        if (!isAccepted) {
+            throw new Error('The query was not accepted by the server.');
+        }
     }
 }
