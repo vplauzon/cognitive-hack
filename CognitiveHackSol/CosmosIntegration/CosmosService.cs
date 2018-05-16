@@ -74,24 +74,33 @@ namespace CosmosIntegration
         #region Groups
         public Task<GroupData[]> GetAllCategoriesAsync()
         {
-            return GetGroupAsync("getAllCategories");
+            return GetGroupsAsync("SELECT cat.name"
+                + " FROM c JOIN cat in c.categories"
+                + " WHERE c.objectType = 'image'");
         }
 
         public Task<GroupData[]> GetAllTagsAsync()
         {
-            return GetGroupAsync("getAllTags");
+            return GetGroupsAsync("SELECT tag.name"
+                + " FROM c"
+                + " JOIN tag in c.tags"
+                + " WHERE c.objectType = 'image'");
         }
 
         public Task<GroupData[]> GetAllCaptionsAsync()
         {
-            return GetGroupAsync("getAllCaptions");
+            return GetGroupsAsync("SELECT caption.text AS name"
+                + " FROM c"
+                + " JOIN caption in c.captions"
+                + " WHERE c.objectType = 'image'");
         }
 
-        private async Task<GroupData[]> GetGroupAsync(string sprocName)
+        private async Task<GroupData[]> GetGroupsAsync(string query)
         {
             var response = await _client.ExecuteStoredProcedureAsync<IDictionary<string, int>>(
-                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, sprocName),
-                _defaultRequestOptions);
+                UriFactory.CreateStoredProcedureUri(DB, COLLECTION, "getGroups"),
+                _defaultRequestOptions,
+                query);
             var result = from p in response.Response
                          select new GroupData
                          {

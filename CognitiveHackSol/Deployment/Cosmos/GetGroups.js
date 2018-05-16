@@ -1,19 +1,13 @@
-﻿function getAllCategories() {
+﻿function getGroups(query) {
     var response = getContext().getResponse();
     var collection = getContext().getCollection();
-    var query = `
-SELECT cat.name
-FROM c
-JOIN cat in c.categories
-WHERE c.objectType = "image"
-`;
     var countDict = {};
 
     tryQuery();
 
     function tryQuery(continuation) {
         var requestOptions = { continuation: continuation };
-        // Query documents for all categories
+        // Query documents for all captions
         var isAccepted = collection.queryDocuments(
             collection.getSelfLink(),
             query,
