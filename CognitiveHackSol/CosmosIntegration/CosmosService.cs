@@ -115,10 +115,11 @@ namespace CosmosIntegration
         #region Search
         public async Task<SearchResultData> Search(int maxImageCount, string[] tags)
         {
-            var tagFilter = string.Join(
-                " OR ",
-                from i in Enumerable.Range(1, tags.Length)
-                select "tag.name=@tag" + i);
+            var tagList = from i in Enumerable.Range(1, tags.Length)
+                          select "@tag" + i;
+            var tagFormattedList = string.Join(", ", tagList);
+            var tagFilter =
+                $"EXISTS(SELECT VALUE t FROM t IN c.tags WHERE t.name IN ({tagFormattedList}))";
             var tagParams = from i in Enumerable.Range(1, tags.Length)
                             select new SqlParameter("@tag" + i, tags[i - 1]);
             var parameters = CreateParams(
@@ -128,9 +129,8 @@ namespace CosmosIntegration
                 new SqlQuerySpec(
                     "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
                     + " FROM c"
-                    + (tags.Any() ? " JOIN tag IN c.tags" : string.Empty)
                     + " WHERE c.objectType='image'"
-                    + (tags.Any() ? " AND (" + tagFilter + ")" : string.Empty)
+                    + (tags.Any() ? " AND " + tagFilter : string.Empty)
                     + " ORDER BY c.captions[0].confidence DESC",
                     parameters),
                 _defaultFeedOptions);
