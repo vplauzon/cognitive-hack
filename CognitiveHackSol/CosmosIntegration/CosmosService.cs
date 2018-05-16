@@ -33,16 +33,6 @@ namespace CosmosIntegration
             };
         }
 
-        public Task Search(int mAX_IMAGE_COUNT, string[] tags, object categories, string[] captions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Search(int mAX_IMAGE_COUNT, string[] tags, object categories, object captions)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<string> GetStatusAsync()
         {
             var query = _client.CreateDocumentQuery(
@@ -129,13 +119,14 @@ namespace CosmosIntegration
             string[] categories,
             string[] captions)
         {
-            tags = tags ?? new string[0];
-            categories = categories ?? new string[0];
-            captions = captions ?? new string[0];
-
             var tagFilter = CreateSearchFilter("tags", "name", tags);
             var categoryFilter = CreateSearchFilter("categories", "name", categories);
             var captionFilter = CreateSearchFilter("captions", "text", captions);
+            var activeFilters = from s in
+                                  new[] { tagFilter.Filter, categoryFilter.Filter, captionFilter.Filter }
+                                where !string.IsNullOrWhiteSpace(s)
+                                select s;
+            var activeFilterFormat = string.Join(" OR ", activeFilters);
             var parameters = CreateParams(tagFilter.Parameters
                 .Concat(categoryFilter.Parameters)
                 .Concat(captionFilter.Parameters)
@@ -143,9 +134,7 @@ namespace CosmosIntegration
             var queryText = "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
                 + " FROM c"
                 + " WHERE c.objectType='image'"
-                + (tags.Any() ? " AND " + tagFilter.Filter : string.Empty)
-                + (categories.Any() ? " AND " + categoryFilter.Filter : string.Empty)
-                + (captions.Any() ? " AND " + captionFilter.Filter : string.Empty)
+                + (activeFilters.Any() ? " AND (" + activeFilterFormat + ")" : string.Empty)
                 + " ORDER BY c.captions[0].confidence DESC";
             var query = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
@@ -166,15 +155,22 @@ namespace CosmosIntegration
             string fieldTextName,
             string[] fieldValueList)
         {
-            var paramNameList = from i in Enumerable.Range(1, fieldValueList.Length)
-                                select "@" + docField + i;
-            var paramFormattedList = string.Join(", ", paramNameList);
-            var filter = $"EXISTS(SELECT VALUE t FROM t IN c.{docField} WHERE"
-                + $" t.{fieldTextName} IN ({paramFormattedList}))";
-            var paramList = from i in Enumerable.Range(1, fieldValueList.Length)
-                            select new SqlParameter("@" + docField + i, fieldValueList[i - 1]);
+            if (fieldValueList == null || fieldValueList.Length == 0)
+            {
+                return (string.Empty, new SqlParameter[0]);
+            }
+            else
+            {
+                var paramNameList = from i in Enumerable.Range(1, fieldValueList.Length)
+                                    select "@" + docField + i;
+                var paramFormattedList = string.Join(", ", paramNameList);
+                var filter = $"EXISTS(SELECT VALUE t FROM t IN c.{docField} WHERE"
+                    + $" t.{fieldTextName} IN ({paramFormattedList}))";
+                var paramList = from i in Enumerable.Range(1, fieldValueList.Length)
+                                select new SqlParameter("@" + docField + i, fieldValueList[i - 1]);
 
-            return (filter, paramList);
+                return (filter, paramList);
+            }
         }
         #endregion
 
