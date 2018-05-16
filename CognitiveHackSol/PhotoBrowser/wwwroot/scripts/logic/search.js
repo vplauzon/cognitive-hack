@@ -1,5 +1,11 @@
-﻿function search_bindCriteria(tags, imageResult, imageResultTemplate, searchCount) {
-    var criteria = { tags: [] };
+﻿function search_bindCriteria(
+    tags,
+    categories,
+    captions,
+    imageResult,
+    imageResultTemplate,
+    searchCount) {
+    var criteria = { tags: [], categories:[], captions:[] };
     var searchState = {
         isRefreshing: false,
         isOneWaiting: false,
@@ -11,26 +17,34 @@
         }
     };
 
-    tags.forEach(inputBox => search_injectOnClick(searchState, inputBox));
+    tags.forEach(inputBox => search_injectOnClick(
+        searchState,
+        searchState.criteria.tags, inputBox));
+    categories.forEach(inputBox => search_injectOnClick(
+        searchState,
+        searchState.criteria.categories, inputBox));
+    captions.forEach(inputBox => search_injectOnClick(
+        searchState,
+        searchState.criteria.captions, inputBox));
 
     //  Perform the initial search
     search_onChangeCriteria(searchState);
 }
 
-function search_injectOnClick(searchState, inputBox) {
+function search_injectOnClick(searchState, searchStateCollection, inputBox) {
     inputBox.onclick = function () {
         if (inputBox.checked) {
-            var index = searchState.criteria.tags.findIndex(function (v) { return v == inputBox.value; });
+            var index = searchStateCollection.findIndex(function (v) { return v == inputBox.value; });
 
             if (index == -1) {
-                searchState.criteria.tags.push(inputBox.value);
+                searchStateCollection.push(inputBox.value);
             }
         }
         else {
-            var index = searchState.criteria.tags.findIndex(function (v) { return v == inputBox.value; });
+            var index = searchStateCollection.findIndex(function (v) { return v == inputBox.value; });
 
             if (index >= 0) {
-                searchState.criteria.tags.splice(index, 1);
+                searchStateCollection.splice(index, 1);
             }
         }
 

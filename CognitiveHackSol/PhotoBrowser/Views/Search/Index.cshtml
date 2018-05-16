@@ -44,10 +44,11 @@
                         var model = Model.Categories[i];
                         var categoryId = "category" + i;
                         var categoryCheckBoxId = "categoryCheckBox" + i;
+                        var categoryValue = model.Text;
 
                         <p id="@categoryId" class="searchItem">
                             <label>
-                                <input type="checkbox" id="@categoryCheckBoxId" />
+                                <input type="checkbox" id="@categoryCheckBoxId" value="@categoryValue" />
                                 @string.Concat(model.Text, " (", model.Count, ")")
                             </label>
                         </p>
@@ -62,10 +63,11 @@
                         var model = Model.Captions[i];
                         var captionId = "caption" + i;
                         var captionCheckBoxId = "captionCheckBox" + i;
+                        var captionValue = model.Text;
 
                         <p id="@captionId" class="searchItem">
                             <label>
-                                <input type="checkbox" id="@captionCheckBoxId" />
+                                <input type="checkbox" id="@captionCheckBoxId" value="@captionValue" />
                                 @string.Concat(model.Text, " (", model.Count, ")")
                             </label>
                         </p>
@@ -83,7 +85,7 @@
     </section>
 
     <script type="text/javascript">
-        bootstrapSearch(@Model.Tags.Length);
+        bootstrapSearch(@Model.Tags.Length, @Model.Categories.Length, @Model.Captions.Length);
     </script>
 </body>
 </html>

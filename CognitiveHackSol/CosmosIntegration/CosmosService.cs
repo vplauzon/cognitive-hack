@@ -33,6 +33,16 @@ namespace CosmosIntegration
             };
         }
 
+        public Task Search(int mAX_IMAGE_COUNT, string[] tags, object categories, string[] captions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Search(int mAX_IMAGE_COUNT, string[] tags, object categories, object captions)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<string> GetStatusAsync()
         {
             var query = _client.CreateDocumentQuery(
@@ -113,26 +123,33 @@ namespace CosmosIntegration
         #endregion
 
         #region Search
-        public async Task<SearchResultData> Search(int maxImageCount, string[] tags)
+        public async Task<SearchResultData> SearchAsync(
+            int maxImageCount,
+            string[] tags,
+            string[] categories,
+            string[] captions)
         {
-            var tagList = from i in Enumerable.Range(1, tags.Length)
-                          select "@tag" + i;
-            var tagFormattedList = string.Join(", ", tagList);
-            var tagFilter =
-                $"EXISTS(SELECT VALUE t FROM t IN c.tags WHERE t.name IN ({tagFormattedList}))";
-            var tagParams = from i in Enumerable.Range(1, tags.Length)
-                            select new SqlParameter("@tag" + i, tags[i - 1]);
-            var parameters = CreateParams(
-                tagParams.Append(new SqlParameter("@imageCount", maxImageCount)));
+            tags = tags ?? new string[0];
+            categories = categories ?? new string[0];
+            captions = captions ?? new string[0];
+
+            var tagFilter = CreateSearchFilter("tags", "name", tags);
+            var categoryFilter = CreateSearchFilter("categories", "name", categories);
+            var captionFilter = CreateSearchFilter("captions", "text", captions);
+            var parameters = CreateParams(tagFilter.Parameters
+                .Concat(categoryFilter.Parameters)
+                .Concat(captionFilter.Parameters)
+                .Append(new SqlParameter("@imageCount", maxImageCount)));
+            var queryText = "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
+                + " FROM c"
+                + " WHERE c.objectType='image'"
+                + (tags.Any() ? " AND " + tagFilter.Filter : string.Empty)
+                + (categories.Any() ? " AND " + categoryFilter.Filter : string.Empty)
+                + (captions.Any() ? " AND " + captionFilter.Filter : string.Empty)
+                + " ORDER BY c.captions[0].confidence DESC";
             var query = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
-                new SqlQuerySpec(
-                    "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
-                    + " FROM c"
-                    + " WHERE c.objectType='image'"
-                    + (tags.Any() ? " AND " + tagFilter : string.Empty)
-                    + " ORDER BY c.captions[0].confidence DESC",
-                    parameters),
+                new SqlQuerySpec(queryText, parameters),
                 _defaultFeedOptions);
             var images = await GetAllResultsAsync(query.AsDocumentQuery());
             var result = new SearchResultData
@@ -142,6 +159,22 @@ namespace CosmosIntegration
             };
 
             return result;
+        }
+
+        private (string Filter, IEnumerable<SqlParameter> Parameters) CreateSearchFilter(
+            string docField,
+            string fieldTextName,
+            string[] fieldValueList)
+        {
+            var paramNameList = from i in Enumerable.Range(1, fieldValueList.Length)
+                                select "@" + docField + i;
+            var paramFormattedList = string.Join(", ", paramNameList);
+            var filter = $"EXISTS(SELECT VALUE t FROM t IN c.{docField} WHERE"
+                + $" t.{fieldTextName} IN ({paramFormattedList}))";
+            var paramList = from i in Enumerable.Range(1, fieldValueList.Length)
+                            select new SqlParameter("@" + docField + i, fieldValueList[i - 1]);
+
+            return (filter, paramList);
         }
         #endregion
 

@@ -27,7 +27,11 @@ namespace PhotoBrowser.Api.Search
         {
             var cosmosService = GetCosmosService();
             //  Ask both in parallel
-            var data = await cosmosService.Search(MAX_IMAGE_COUNT, criteria.Tags);
+            var data = await cosmosService.SearchAsync(
+                MAX_IMAGE_COUNT,
+                criteria.Tags,
+                criteria.Categories,
+                criteria.Captions);
             var images = from d in data.Images
                          select new ImagePayload
                          {
