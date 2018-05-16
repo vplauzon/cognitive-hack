@@ -131,20 +131,33 @@ namespace CosmosIntegration
                 .Concat(categoryFilter.Parameters)
                 .Concat(captionFilter.Parameters)
                 .Append(new SqlParameter("@imageCount", maxImageCount)));
-            var queryText = "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
-                + " FROM c"
+            var queryFromText = " FROM c"
                 + " WHERE c.objectType='image'"
                 + (activeFilters.Any() ? " AND (" + activeFilterFormat + ")" : string.Empty)
                 + " ORDER BY c.captions[0].confidence DESC";
-            var query = _client.CreateDocumentQuery<SearchImageData>(
+            var queryTopText =
+                "SELECT TOP @imageCount c.id, c.thumbnailUrl, c.captions, c.categories, c.tags"
+                + queryFromText;
+            var queryTop = _client.CreateDocumentQuery<SearchImageData>(
                 _collectionUri,
-                new SqlQuerySpec(queryText, parameters),
+                new SqlQuerySpec(queryTopText, parameters),
                 _defaultFeedOptions);
-            var images = await GetAllResultsAsync(query.AsDocumentQuery());
+            var imagesTask = GetAllResultsAsync(queryTop.AsDocumentQuery());
+            var queryCountText = "SELECT VALUE COUNT(c.id)" + queryFromText;
+            var queryCount = _client.CreateDocumentQuery<int>(
+                _collectionUri,
+                new SqlQuerySpec(queryCountText, parameters),
+                _defaultFeedOptions);
+            var countTask = GetAllResultsAsync(queryCount.AsDocumentQuery());
+
+            await Task.WhenAll(imagesTask, countTask);
+
+            var images = imagesTask.Result;
+            var count = countTask.Result;
             var result = new SearchResultData
             {
                 Images = images,
-                TotalAvailable = 42
+                TotalAvailable = count[0]
             };
 
             return result;
